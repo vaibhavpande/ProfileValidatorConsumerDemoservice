@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<property name="LOG_PATH" value="c:/logs" />
+	<appender name="SAVE-TO-FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/log.log</file>
+		
+		<layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+			<jsonFormatter
+				class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+				<prettyPrint>true</prettyPrint>
+			</jsonFormatter>
+			<timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampFormat>
+			<appendLineSeparator>true</appendLineSeparator>
+		</layout>		
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/archived/log%d{yyyy-MM-dd_HH}.%i.log
+			</fileNamePattern>
+			<maxFileSize>1MB</maxFileSize>
+			<maxHistory>1</maxHistory>
+			<cleanHistoryOnStart>true</cleanHistoryOnStart>
+		</rollingPolicy>
+	</appender>	
+
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{50} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<logger name="chapters.configuration" level="ERROR" additivity="false">
+   		<appender-ref ref="SAVE-TO-FILE" />
+		<appender-ref ref="STDOUT" />
+  </logger>
+	<root level="info">
+		<appender-ref ref="SAVE-TO-FILE" />
+		<appender-ref ref="STDOUT" />
+	</root>
+	<root level="DEBUG">
+		<appender-ref ref="SAVE-TO-FILE" />
+		<appender-ref ref="STDOUT" />
+	</root>
+		
+</configuration>
